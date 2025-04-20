@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { Heart, Star } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useNavigate } from 'react-router-dom';
 
 export interface PropertyProps {
   id: number;
@@ -41,6 +41,7 @@ const PropertyCard: React.FC<PropertyProps> = ({
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -56,7 +57,7 @@ const PropertyCard: React.FC<PropertyProps> = ({
       className="overflow-hidden border-none shadow-none hover:cursor-pointer transition-transform duration-300 hover:scale-[1.02] group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => toast(`Selected: ${title}`, { description: `${roomType} • ${beds} beds • ${baths} baths` })}
+      onClick={() => navigate(`/property/${id}`)}
     >
       <CardContent className="p-0">
         <div className="relative">
