@@ -1,8 +1,9 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import CategoryFilter from '@/components/CategoryFilter';
 import PropertyCard, { PropertyProps } from '@/components/PropertyCard';
+import { cn } from '@/lib/utils';
 
 const MOCK_PROPERTIES: PropertyProps[] = [
   {
@@ -112,16 +113,50 @@ const MOCK_PROPERTIES: PropertyProps[] = [
 ];
 
 const Index: React.FC = () => {
+  const [visibleCards, setVisibleCards] = useState<PropertyProps[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    // Simulate progressive loading of cards for a nice animation effect
+    const showCards = async () => {
+      setVisibleCards([]);
+      
+      // Start showing cards one by one with a slight delay
+      for (let i = 0; i < MOCK_PROPERTIES.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        setVisibleCards(prev => [...prev, MOCK_PROPERTIES[i]]);
+      }
+    };
+
+    showCards();
+    setTimeout(() => setLoaded(true), 500);
+  }, []);
+
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className={cn(
+      "flex flex-col min-h-screen transition-opacity duration-500",
+      loaded ? "opacity-100" : "opacity-0"
+    )}>
       <Header />
       <CategoryFilter />
       
-      <main className="flex-grow pb-10">
+      <main className="flex-grow pb-10 transition-all duration-300">
         <div className="container mx-auto px-4 md:px-8 mt-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {MOCK_PROPERTIES.map(property => (
-              <PropertyCard key={property.id} {...property} />
+            {visibleCards.map((property, index) => (
+              <div 
+                key={property.id}
+                className={cn(
+                  "opacity-0 transform translate-y-4",
+                  loaded && `animate-[fadeIn_0.5s_ease-out_${index * 0.1}s_forwards]`
+                )}
+                style={{
+                  animationDelay: `${index * 0.05}s`,
+                  animationFillMode: 'forwards'
+                }}
+              >
+                <PropertyCard {...property} />
+              </div>
             ))}
           </div>
         </div>
@@ -133,41 +168,41 @@ const Index: React.FC = () => {
             <div>
               <h3 className="font-bold mb-4">Support</h3>
               <ul className="space-y-3 text-sm">
-                <li><a href="#" className="hover:underline">Help Center</a></li>
-                <li><a href="#" className="hover:underline">AirCover</a></li>
-                <li><a href="#" className="hover:underline">Safety information</a></li>
-                <li><a href="#" className="hover:underline">Supporting people with disabilities</a></li>
-                <li><a href="#" className="hover:underline">Cancellation options</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Help Center</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">AirCover</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Safety information</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Supporting people with disabilities</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Cancellation options</a></li>
               </ul>
             </div>
             
             <div>
               <h3 className="font-bold mb-4">Community</h3>
               <ul className="space-y-3 text-sm">
-                <li><a href="#" className="hover:underline">Airbnb.org: disaster relief housing</a></li>
-                <li><a href="#" className="hover:underline">Combating discrimination</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Airbnb.org: disaster relief housing</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Combating discrimination</a></li>
               </ul>
             </div>
             
             <div>
               <h3 className="font-bold mb-4">Hosting</h3>
               <ul className="space-y-3 text-sm">
-                <li><a href="#" className="hover:underline">Airbnb your home</a></li>
-                <li><a href="#" className="hover:underline">AirCover for Hosts</a></li>
-                <li><a href="#" className="hover:underline">Hosting resources</a></li>
-                <li><a href="#" className="hover:underline">Community forum</a></li>
-                <li><a href="#" className="hover:underline">Hosting responsibly</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Airbnb your home</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">AirCover for Hosts</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Hosting resources</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Community forum</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Hosting responsibly</a></li>
               </ul>
             </div>
             
             <div>
               <h3 className="font-bold mb-4">Airbnb</h3>
               <ul className="space-y-3 text-sm">
-                <li><a href="#" className="hover:underline">Newsroom</a></li>
-                <li><a href="#" className="hover:underline">New features</a></li>
-                <li><a href="#" className="hover:underline">Careers</a></li>
-                <li><a href="#" className="hover:underline">Investors</a></li>
-                <li><a href="#" className="hover:underline">Gift cards</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Newsroom</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">New features</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Careers</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Investors</a></li>
+                <li><a href="#" className="hover:underline transition-all duration-200">Gift cards</a></li>
               </ul>
             </div>
           </div>
@@ -177,11 +212,11 @@ const Index: React.FC = () => {
               <span>© 2025 Airbnb, Inc.</span>
               <div className="hidden md:flex gap-2">
                 <span>·</span>
-                <a href="#" className="hover:underline">Privacy</a>
+                <a href="#" className="hover:underline transition-all duration-200">Privacy</a>
                 <span>·</span>
-                <a href="#" className="hover:underline">Terms</a>
+                <a href="#" className="hover:underline transition-all duration-200">Terms</a>
                 <span>·</span>
-                <a href="#" className="hover:underline">Sitemap</a>
+                <a href="#" className="hover:underline transition-all duration-200">Sitemap</a>
               </div>
             </div>
             

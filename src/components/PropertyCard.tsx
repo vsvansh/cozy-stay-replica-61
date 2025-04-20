@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Heart, Star } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { cn } from "@/lib/utils";
 
 export interface PropertyProps {
   id: number;
@@ -27,12 +28,15 @@ const PropertyCard: React.FC<PropertyProps> = ({
 }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
-  const nextImage = () => {
+  const nextImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   };
 
-  const prevImage = () => {
+  const prevImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
 
@@ -42,7 +46,11 @@ const PropertyCard: React.FC<PropertyProps> = ({
   };
 
   return (
-    <Card className="overflow-hidden border-none shadow-none hover:cursor-pointer">
+    <Card 
+      className="overflow-hidden border-none shadow-none hover:cursor-pointer transition-transform duration-200"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <CardContent className="p-0">
         <div className="relative">
           <div className="relative">
@@ -50,32 +58,38 @@ const PropertyCard: React.FC<PropertyProps> = ({
               <img
                 src={images[currentImageIndex]}
                 alt={title}
-                className="object-cover w-full h-full rounded-xl"
+                className={cn(
+                  "object-cover w-full h-full rounded-xl transition-all duration-300",
+                  isHovered ? "scale-105" : "scale-100"
+                )}
               />
             </AspectRatio>
             
-            {images.length > 1 && (
+            {images.length > 1 && isHovered && (
               <>
                 <button 
-                  onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-white w-7 h-7 rounded-full flex items-center justify-center shadow-md opacity-70 hover:opacity-100"
+                  onClick={prevImage}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 bg-white w-7 h-7 rounded-full flex items-center justify-center shadow-md opacity-90 hover:opacity-100 transition-opacity duration-200"
+                  aria-label="Previous image"
                 >
-                  <span>&lt;</span>
+                  <span className="font-semibold">&lt;</span>
                 </button>
                 <button 
-                  onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-white w-7 h-7 rounded-full flex items-center justify-center shadow-md opacity-70 hover:opacity-100"
+                  onClick={nextImage}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 bg-white w-7 h-7 rounded-full flex items-center justify-center shadow-md opacity-90 hover:opacity-100 transition-opacity duration-200"
+                  aria-label="Next image"
                 >
-                  <span>&gt;</span>
+                  <span className="font-semibold">&gt;</span>
                 </button>
               </>
             )}
             
             <button
               onClick={toggleFavorite}
-              className="absolute top-3 right-3 z-10"
+              className="absolute top-3 right-3 z-10 transition-transform duration-200 hover:scale-110"
+              aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
-              <Heart className={`h-6 w-6 ${isFavorite ? 'fill-airbnb-red text-airbnb-red' : 'text-white'} stroke-[1.5]`} />
+              <Heart className={`h-6 w-6 ${isFavorite ? 'fill-airbnb-red text-airbnb-red' : 'text-white stroke-[2]'}`} />
             </button>
           </div>
           

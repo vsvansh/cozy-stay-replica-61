@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
 
 type Category = {
   id: number;
@@ -42,12 +43,20 @@ const CategoryFilter: React.FC = () => {
             {categories.map((category) => (
               <div 
                 key={category.id}
-                className={`flex flex-col items-center cursor-pointer pb-2 transition-colors text-sm min-w-[56px] ${
-                  activeCategory === category.id ? 'text-black border-b-2 border-black' : 'text-gray-500 hover:text-black hover:border-b-2 hover:border-gray-300'
-                }`}
+                className={cn(
+                  "flex flex-col items-center cursor-pointer pb-2 transition-all duration-200 text-sm min-w-[56px] hover:opacity-100",
+                  activeCategory === category.id 
+                    ? "text-black border-b-2 border-black" 
+                    : "text-gray-500 hover:text-black hover:border-b-2 hover:border-gray-300 opacity-85"
+                )}
                 onClick={() => setActiveCategory(category.id === activeCategory ? null : category.id)}
               >
-                <div className="text-2xl mb-1">{category.icon}</div>
+                <div className={cn(
+                  "text-2xl mb-1 transition-transform duration-200",
+                  activeCategory === category.id ? "scale-110" : ""
+                )}>
+                  {category.icon}
+                </div>
                 <span className="text-xs">{category.name}</span>
               </div>
             ))}
