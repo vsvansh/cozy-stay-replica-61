@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Heart, Star } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
@@ -70,6 +71,10 @@ const PropertyCard: React.FC<PropertyProps> = ({
                       src={image}
                       alt={`${title} - ${index + 1}`}
                       className="object-cover w-full h-full transition-all duration-300"
+                      onError={(e) => {
+                        // Fallback for broken images
+                        (e.target as HTMLImageElement).src = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+                      }}
                     />
                   </div>
                 </CarouselItem>

@@ -1,12 +1,67 @@
-import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Home } from 'lucide-react';
+
+import React, { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Heart, Star, Share, Award, Home, MapPin, Users, Bed, Bath, Calendar, ExternalLink } from 'lucide-react';
 import { PropertyProps } from '@/components/PropertyCard';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
+import Header from '@/components/Header';
 
 const PropertyDetails: React.FC = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const property = MOCK_PROPERTIES.find(p => p.id === Number(id));
+
+  useEffect(() => {
+    // Simulate loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      window.scrollTo(0, 0);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [id]);
+
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+    toast(isFavorite ? "Removed from favorites" : "Added to favorites", {
+      description: property?.title,
+      duration: 3000,
+    });
+  };
+
+  const handleShare = () => {
+    toast("Share this place", {
+      description: "Link copied to clipboard",
+      duration: 3000,
+    });
+  };
+
+  const handleReserve = () => {
+    toast("Reservation request sent!", {
+      description: "The host will respond shortly",
+      duration: 3000,
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-16 flex flex-col items-center">
+        <div className="w-full max-w-3xl animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
+          <div className="h-64 bg-gray-200 rounded-xl mb-6"></div>
+          <div className="h-8 bg-gray-200 rounded w-2/3 mb-4"></div>
+          <div className="h-6 bg-gray-200 rounded w-1/2 mb-6"></div>
+          <div className="h-32 bg-gray-200 rounded-xl mb-6"></div>
+          <div className="h-40 bg-gray-200 rounded-xl"></div>
+        </div>
+      </div>
+    );
+  }
 
   if (!property) {
     return (
@@ -22,82 +77,276 @@ const PropertyDetails: React.FC = () => {
     );
   }
 
+  const formattedDates = property.dates || "Available now";
+  const photos = property.images;
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Link to="/" className="inline-flex items-center gap-2 mb-6 hover:text-gray-600 transition-colors">
-        <ArrowLeft className="h-4 w-4" />
-        Back to listings
-      </Link>
+    <div className="min-h-screen flex flex-col">
+      <Header />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="space-y-4">
-          <img 
-            src={property.images[0]} 
-            alt={property.title} 
-            className="w-full h-[400px] object-cover rounded-xl"
-          />
-          <div className="grid grid-cols-2 gap-4">
-            {property.images.slice(1, 3).map((image, index) => (
-              <img 
-                key={index}
-                src={image}
-                alt={`${property.title} ${index + 2}`}
-                className="w-full h-48 object-cover rounded-xl"
-              />
-            ))}
-          </div>
-        </div>
-        
-        <div className="space-y-6">
-          <div>
-            <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
-            <p className="text-gray-600">{property.location}</p>
+      <div className="container mx-auto px-4 py-6 flex-grow">
+        <div className="max-w-6xl mx-auto">
+          {/* Back Button */}
+          <Link 
+            to="/" 
+            className="inline-flex items-center gap-2 mb-4 text-gray-600 hover:text-black transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to listings
+          </Link>
+          
+          {/* Property Title */}
+          <div className="mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold">{property.title}</h1>
           </div>
           
-          <div className="flex items-center gap-4">
-            {property.isSuperHost && (
-              <span className="px-2 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-700">
-                SUPERHOST
-              </span>
-            )}
-            {property.isNew && (
-              <span className="px-2 py-1 rounded-full text-xs font-semibold bg-teal-100 text-teal-700">
-                NEW
-              </span>
-            )}
-            <div className="flex items-center">
-              <span className="font-semibold">⭐ {property.rating.toFixed(2)}</span>
-            </div>
-          </div>
-          
-          <div className="border-t border-b py-6 space-y-4">
-            <div>
-              <h2 className="font-semibold text-xl mb-2">Property Details</h2>
-              <p>{property.roomType} • {property.beds} beds • {property.baths} baths</p>
+          {/* Property Meta & Actions */}
+          <div className="flex flex-wrap justify-between items-center mb-6">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center">
+                <Star className="h-4 w-4 fill-current text-black mr-1" />
+                <span className="font-semibold">{property.rating.toFixed(2)}</span>
+              </div>
+              <span className="mx-1">•</span>
+              <span className="text-gray-700">{property.location}</span>
             </div>
             
-            {property.amenities && (
-              <div>
-                <h3 className="font-semibold mb-2">Amenities</h3>
-                <ul className="grid grid-cols-2 gap-2">
-                  {property.amenities.map((amenity, index) => (
-                    <li key={index} className="flex items-center gap-2">
-                      <span>•</span> {amenity}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            <div className="flex items-center gap-4 mt-2 sm:mt-0">
+              <button 
+                onClick={handleShare}
+                className="flex items-center gap-1 text-gray-800 hover:text-black transition-colors"
+              >
+                <Share className="h-4 w-4" />
+                <span>Share</span>
+              </button>
+              
+              <button 
+                onClick={toggleFavorite}
+                className="flex items-center gap-1 text-gray-800 hover:text-black transition-colors"
+              >
+                <Heart className={`h-4 w-4 ${isFavorite ? 'fill-red-500 text-red-500' : ''}`} />
+                <span>{isFavorite ? 'Saved' : 'Save'}</span>
+              </button>
+            </div>
           </div>
           
-          <div className="bg-gray-50 p-6 rounded-xl">
-            <div className="flex justify-between items-center mb-4">
-              <span className="text-2xl font-bold">${property.price}</span>
-              <span>per night</span>
+          {/* Photo Gallery */}
+          <div className="mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 rounded-xl overflow-hidden">
+              {photos.length > 0 && (
+                <div className="md:col-span-1 aspect-square relative">
+                  <img 
+                    src={photos[0]} 
+                    alt={property.title} 
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+                    }}
+                  />
+                </div>
+              )}
+              
+              <div className="hidden md:grid grid-cols-2 gap-2">
+                {photos.slice(1, 5).map((photo, idx) => (
+                  <div key={idx} className="aspect-square relative">
+                    <img 
+                      src={photo} 
+                      alt={`${property.title} ${idx + 2}`} 
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
-            <Button className="w-full" size="lg">
-              Reserve now
-            </Button>
+            
+            {/* Mobile Carousel */}
+            <div className="block md:hidden mt-2">
+              <Carousel className="w-full">
+                <CarouselContent>
+                  {photos.slice(1).map((photo, idx) => (
+                    <CarouselItem key={idx}>
+                      <div className="aspect-square relative">
+                        <img 
+                          src={photo} 
+                          alt={`${property.title} ${idx + 2}`} 
+                          className="w-full h-full object-cover rounded-xl"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+                          }}
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-white h-7 w-7" />
+                <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white h-7 w-7" />
+              </Carousel>
+            </div>
+          </div>
+          
+          {/* Property Info & Booking */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Left Column - Property Details */}
+            <div className="md:col-span-2 space-y-6">
+              {/* Host Info */}
+              <div>
+                <h2 className="text-xl font-bold mb-2">
+                  {property.roomType} hosted by Airbnb Host
+                  {property.isSuperHost && (
+                    <span className="ml-2 inline-flex items-center text-sm font-medium text-rose-600">
+                      <Award className="h-4 w-4 mr-1" /> Superhost
+                    </span>
+                  )}
+                </h2>
+                <div className="flex flex-wrap gap-x-6 gap-y-2 text-gray-600">
+                  <span className="flex items-center">
+                    <Users className="h-4 w-4 mr-2" />
+                    {property.beds && property.beds * 2} guests
+                  </span>
+                  <span className="flex items-center">
+                    <Bed className="h-4 w-4 mr-2" />
+                    {property.beds} beds
+                  </span>
+                  <span className="flex items-center">
+                    <Bath className="h-4 w-4 mr-2" />
+                    {property.baths} baths
+                  </span>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              {/* Highlights */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex items-start">
+                  <div className="bg-gray-100 p-2 rounded-full mr-4">
+                    <Award className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium">Great location</h3>
+                    <p className="text-gray-600 text-sm">95% of recent guests gave the location a 5-star rating.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="bg-gray-100 p-2 rounded-full mr-4">
+                    <Calendar className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium">Free cancellation before check-in</h3>
+                    <p className="text-gray-600 text-sm">Cancel before check-in for a partial refund.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <Separator />
+              
+              {/* Description */}
+              <div>
+                <h2 className="text-xl font-bold mb-4">About this place</h2>
+                <p className="text-gray-700 leading-relaxed">
+                  Experience this {property.roomType.toLowerCase()} in {property.location}, located just {property.distance.toLowerCase()}. 
+                  This well-appointed home features {property.beds} comfortable beds, {property.baths} bathrooms, and amenities 
+                  including {property.amenities?.join(', ')}.
+                </p>
+              </div>
+              
+              <Separator />
+              
+              {/* Amenities */}
+              <div>
+                <h2 className="text-xl font-bold mb-4">What this place offers</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {property.amenities?.map((amenity, index) => (
+                    <div key={index} className="flex items-center">
+                      <div className="mr-4">
+                        <ExternalLink className="h-5 w-5 text-gray-500" />
+                      </div>
+                      <span>{amenity}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <Separator />
+              
+              {/* Location */}
+              <div>
+                <h2 className="text-xl font-bold mb-4">Where you'll be</h2>
+                <div className="bg-gray-100 rounded-xl p-4 flex items-center justify-center h-64">
+                  <div className="text-center">
+                    <MapPin className="h-8 w-8 mx-auto mb-2 text-gray-600" />
+                    <p className="font-medium">{property.location}</p>
+                    <p className="text-gray-600 text-sm">{property.distance}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Right Column - Booking Card */}
+            <div className="md:col-span-1">
+              <Card className="sticky top-24 border rounded-xl shadow-lg overflow-hidden p-6 space-y-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <span className="text-2xl font-bold">${property.price}</span>
+                    <span className="text-gray-600"> night</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Star className="h-4 w-4 fill-current text-black mr-1" />
+                    <span>{property.rating.toFixed(2)}</span>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-2 border rounded-t-lg overflow-hidden">
+                  <div className="p-4 border-r border-b">
+                    <div className="text-xs font-bold uppercase">CHECK-IN</div>
+                    <div>5/1/2025</div>
+                  </div>
+                  <div className="p-4 border-b">
+                    <div className="text-xs font-bold uppercase">CHECKOUT</div>
+                    <div>5/6/2025</div>
+                  </div>
+                  <div className="p-4 col-span-2 border-t">
+                    <div className="text-xs font-bold uppercase">GUESTS</div>
+                    <div>2 guests</div>
+                  </div>
+                </div>
+                
+                <Button 
+                  className="w-full bg-airbnb-red hover:bg-airbnb-red/90 text-white py-3"
+                  onClick={handleReserve}
+                >
+                  Reserve
+                </Button>
+                
+                <div className="text-center text-gray-500 text-sm">
+                  You won't be charged yet
+                </div>
+                
+                <div className="space-y-3 pt-4">
+                  <div className="flex justify-between">
+                    <span className="underline">${property.price} x 5 nights</span>
+                    <span>${property.price * 5}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="underline">Cleaning fee</span>
+                    <span>$75</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="underline">Service fee</span>
+                    <span>$120</span>
+                  </div>
+                  <Separator />
+                  <div className="flex justify-between font-bold">
+                    <span>Total before taxes</span>
+                    <span>${property.price * 5 + 75 + 120}</span>
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
