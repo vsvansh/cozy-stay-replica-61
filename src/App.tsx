@@ -10,6 +10,21 @@ import PropertyDetails from "./pages/PropertyDetails";
 import ComingSoon from "./pages/ComingSoon";
 import Login from "./pages/Login";
 import Host from "./pages/Host";
+import FeaturesOverview from "./pages/FeaturesOverview";
+import { 
+  MessageSquare, 
+  Users, 
+  Key, 
+  Leaf, 
+  Phone, 
+  Badge, 
+  ChartBar, 
+  Volume2, 
+  Calendar, 
+  Gift, 
+  Map, 
+  UserRound 
+} from 'lucide-react';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +50,70 @@ const App = () => (
           <Route path="/help" element={<ComingSoon title="Help Center" />} />
           <Route path="/experiences" element={<ComingSoon title="Experiences" />} />
           <Route path="/online-experiences" element={<ComingSoon title="Online Experiences" />} />
+          
+          {/* Features Pages */}
+          <Route path="/features" element={<FeaturesOverview />} />
+          <Route path="/features/community-qa" element={
+            <ComingSoon 
+              iconComponent={<MessageSquare size={48} className="text-rose-500" />} 
+            />
+          } />
+          <Route path="/features/split-payment" element={
+            <ComingSoon
+              iconComponent={<Users size={48} className="text-rose-500" />} 
+            />
+          } />
+          <Route path="/features/digital-key" element={
+            <ComingSoon
+              iconComponent={<Key size={48} className="text-rose-500" />} 
+            />
+          } />
+          <Route path="/features/carbon-footprint" element={
+            <ComingSoon
+              iconComponent={<Leaf size={48} className="text-rose-500" />} 
+            />
+          } />
+          <Route path="/features/emergency-contact" element={
+            <ComingSoon
+              iconComponent={<Phone size={48} className="text-rose-500" />} 
+            />
+          } />
+          <Route path="/features/loyalty-program" element={
+            <ComingSoon
+              iconComponent={<Badge size={48} className="text-rose-500" />} 
+            />
+          } />
+          <Route path="/features/smart-pricing" element={
+            <ComingSoon
+              iconComponent={<ChartBar size={48} className="text-rose-500" />} 
+            />
+          } />
+          <Route path="/features/noise-detection" element={
+            <ComingSoon
+              iconComponent={<Volume2 size={48} className="text-rose-500" />} 
+            />
+          } />
+          <Route path="/features/calendar-sync" element={
+            <ComingSoon
+              iconComponent={<Calendar size={48} className="text-rose-500" />} 
+            />
+          } />
+          <Route path="/features/referral-rewards" element={
+            <ComingSoon
+              iconComponent={<Gift size={48} className="text-rose-500" />} 
+            />
+          } />
+          <Route path="/features/interactive-map" element={
+            <ComingSoon
+              iconComponent={<Map size={48} className="text-rose-500" />} 
+            />
+          } />
+          <Route path="/features/co-hosting" element={
+            <ComingSoon
+              iconComponent={<UserRound size={48} className="text-rose-500" />} 
+            />
+          } />
+          
           <Route path="/ComingSoon" element={<ComingSoon />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

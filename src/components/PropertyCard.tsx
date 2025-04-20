@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Heart, Star } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
@@ -66,6 +67,12 @@ const PropertyCard: React.FC<PropertyProps> = ({
     });
   };
 
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>, index: number) => {
+    const target = e.target as HTMLImageElement;
+    target.src = fallbackImages[index % fallbackImages.length];
+    console.log(`Replacing failed image with fallback: ${target.src}`);
+  };
+
   return (
     <Card 
       className="overflow-hidden border-none shadow-none hover:cursor-pointer transition-transform duration-300 hover:scale-[1.02] group"
@@ -84,12 +91,7 @@ const PropertyCard: React.FC<PropertyProps> = ({
                       src={image}
                       alt={`${title || location} - ${index + 1}`}
                       className="object-cover w-full h-full transition-all duration-300"
-                      onError={(e) => {
-                        // If image fails, replace with fallback
-                        const target = e.target as HTMLImageElement;
-                        console.log(`Image failed to load: ${target.src}`);
-                        target.src = fallbackImages[index % fallbackImages.length];
-                      }}
+                      onError={(e) => handleImageError(e, index)}
                       loading="lazy"
                     />
                   </div>
