@@ -9,13 +9,22 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import Header from '@/components/Header';
+import DateRangePicker from '@/components/DateRangePicker';
+import { addDays } from 'date-fns';
+import type { DateRange } from 'react-day-picker';
 
 const PropertyDetails: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isFavorite, setIsFavorite] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [numGuests, setNumGuests] = useState(2);
   const property = MOCK_PROPERTIES.find(p => p.id === Number(id));
+  
+  const [dateRange, setDateRange] = useState<DateRange>({
+    from: addDays(new Date(), 1),
+    to: addDays(new Date(), 6),
+  });
 
   useEffect(() => {
     // Simulate loading
@@ -35,18 +44,62 @@ const PropertyDetails: React.FC = () => {
   };
 
   const handleShare = () => {
-    toast("Share this place", {
-      description: "Link copied to clipboard",
+    if (navigator.share) {
+      navigator.share({
+        title: property?.title || "Airbnb listing",
+        text: `Check out this amazing place in ${property?.location}`,
+        url: window.location.href,
+      }).catch(() => {
+        navigator.clipboard.writeText(window.location.href);
+        toast("Link copied to clipboard", {
+          description: "You can now share it with friends",
+          duration: 3000,
+        });
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      toast("Link copied to clipboard", {
+        description: "You can now share it with friends",
+        duration: 3000,
+      });
+    }
+  };
+
+  const handleReserve = () => {
+    if (!dateRange.from || !dateRange.to) {
+      toast("Please select dates first", {
+        description: "You need to pick a date range for your stay",
+        duration: 3000,
+      });
+      return;
+    }
+    
+    toast("Reservation confirmed!", {
+      description: `Your stay is booked for ${numGuests} guests`,
       duration: 3000,
     });
   };
 
-  const handleReserve = () => {
-    toast("Reservation request sent!", {
-      description: "The host will respond shortly",
-      duration: 3000,
-    });
+  const handleGuestsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setNumGuests(parseInt(e.target.value, 10));
   };
+
+  const calculateTotalNights = (): number => {
+    if (!dateRange.from || !dateRange.to) return 5; // Default if no selection
+    const diffTime = Math.abs(dateRange.to.getTime() - dateRange.from.getTime());
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  const calculateTotal = (): number => {
+    const nights = calculateTotalNights();
+    const subtotal = property ? property.price * nights : 0;
+    const cleaningFee = 75;
+    const serviceFee = 120;
+    return subtotal + cleaningFee + serviceFee;
+  };
+
+  // Fallback image
+  const fallbackImage = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
 
   if (isLoading) {
     return (
@@ -77,8 +130,9 @@ const PropertyDetails: React.FC = () => {
     );
   }
 
-  const formattedDates = property.dates || "Available now";
-  const photos = property.images;
+  const photos = property.images && property.images.length > 0 
+    ? property.images 
+    : [fallbackImage, fallbackImage, fallbackImage, fallbackImage, fallbackImage];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -140,7 +194,7 @@ const PropertyDetails: React.FC = () => {
                     alt={property.title} 
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+                      (e.target as HTMLImageElement).src = fallbackImage;
                     }}
                   />
                 </div>
@@ -154,7 +208,7 @@ const PropertyDetails: React.FC = () => {
                       alt={`${property.title} ${idx + 2}`} 
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+                        (e.target as HTMLImageElement).src = fallbackImage;
                       }}
                     />
                   </div>
@@ -174,7 +228,7 @@ const PropertyDetails: React.FC = () => {
                           alt={`${property.title} ${idx + 2}`} 
                           className="w-full h-full object-cover rounded-xl"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+                            (e.target as HTMLImageElement).src = fallbackImage;
                           }}
                         />
                       </div>
@@ -248,7 +302,7 @@ const PropertyDetails: React.FC = () => {
               <div>
                 <h2 className="text-xl font-bold mb-4">About this place</h2>
                 <p className="text-gray-700 leading-relaxed">
-                  Experience this {property.roomType.toLowerCase()} in {property.location}, located just {property.distance.toLowerCase()}. 
+                  Experience this {property.roomType?.toLowerCase()} in {property.location}, located just {property.distance?.toLowerCase()}. 
                   This well-appointed home features {property.beds} comfortable beds, {property.baths} bathrooms, and amenities 
                   including {property.amenities?.join(', ')}.
                 </p>
@@ -300,18 +354,27 @@ const PropertyDetails: React.FC = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-2 border rounded-t-lg overflow-hidden">
-                  <div className="p-4 border-r border-b">
-                    <div className="text-xs font-bold uppercase">CHECK-IN</div>
-                    <div>5/1/2025</div>
-                  </div>
+                <div className="border rounded-lg overflow-hidden">
                   <div className="p-4 border-b">
-                    <div className="text-xs font-bold uppercase">CHECKOUT</div>
-                    <div>5/6/2025</div>
+                    <DateRangePicker 
+                      dateRange={dateRange} 
+                      onDateRangeChange={setDateRange} 
+                    />
                   </div>
-                  <div className="p-4 col-span-2 border-t">
-                    <div className="text-xs font-bold uppercase">GUESTS</div>
-                    <div>2 guests</div>
+                  <div className="p-4">
+                    <label htmlFor="guests" className="block text-xs font-bold uppercase mb-1">GUESTS</label>
+                    <select 
+                      id="guests" 
+                      value={numGuests}
+                      onChange={handleGuestsChange}
+                      className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-gray-200"
+                    >
+                      {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
+                        <option key={num} value={num}>
+                          {num} {num === 1 ? 'guest' : 'guests'}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
                 
@@ -328,8 +391,10 @@ const PropertyDetails: React.FC = () => {
                 
                 <div className="space-y-3 pt-4">
                   <div className="flex justify-between">
-                    <span className="underline">${property.price} x 5 nights</span>
-                    <span>${property.price * 5}</span>
+                    <span className="underline">
+                      ${property.price} x {calculateTotalNights()} nights
+                    </span>
+                    <span>${property.price * calculateTotalNights()}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="underline">Cleaning fee</span>
@@ -342,7 +407,7 @@ const PropertyDetails: React.FC = () => {
                   <Separator />
                   <div className="flex justify-between font-bold">
                     <span>Total before taxes</span>
-                    <span>${property.price * 5 + 75 + 120}</span>
+                    <span>${calculateTotal()}</span>
                   </div>
                 </div>
               </Card>

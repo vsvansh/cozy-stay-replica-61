@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PropertyDetails from "./pages/PropertyDetails";
+import ComingSoon from "./pages/ComingSoon";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -26,6 +27,10 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/property/:id" element={<PropertyDetails />} />
+          <Route path="/host" element={<ComingSoon title="Host your home" />} />
+          <Route path="/login" element={<ComingSoon title="Login" />} />
+          <Route path="/signup" element={<ComingSoon title="Sign up" />} />
+          <Route path="/help" element={<ComingSoon title="Help Center" />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -53,6 +53,9 @@ const PropertyCard: React.FC<PropertyProps> = ({
     });
   };
 
+  // Fallback image in case the original fails to load
+  const fallbackImage = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+
   return (
     <Card 
       className="overflow-hidden border-none shadow-none hover:cursor-pointer transition-transform duration-300 hover:scale-[1.02] group"
@@ -68,12 +71,11 @@ const PropertyCard: React.FC<PropertyProps> = ({
                 <CarouselItem key={`${id}-image-${index}`}>
                   <div className="aspect-square relative">
                     <img
-                      src={image}
+                      src={image || fallbackImage}
                       alt={`${title} - ${index + 1}`}
                       className="object-cover w-full h-full transition-all duration-300"
                       onError={(e) => {
-                        // Fallback for broken images
-                        (e.target as HTMLImageElement).src = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+                        (e.target as HTMLImageElement).src = fallbackImage;
                       }}
                     />
                   </div>
