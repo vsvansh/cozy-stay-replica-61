@@ -9,6 +9,156 @@ import { Skeleton } from '@/components/ui/skeleton';
 const MOCK_PROPERTIES: PropertyProps[] = [
   {
     id: 1,
+    title: "Luxury Beachfront Villa",
+    location: "Malibu, California",
+    distance: "50 miles away",
+    dates: "Nov 12-17",
+    price: 1250,
+    rating: 4.98,
+    isSuperHost: true,
+    roomType: "Entire villa",
+    beds: 4,
+    baths: 3.5,
+    amenities: ["Pool", "Ocean view", "Kitchen"],
+    images: [
+      "https://a0.muscache.com/im/pictures/monet/Luxury-570973165437649140/original/704c15d9-2d1e-42a8-b9d4-3da9f2c45026?im_w=1200",
+      "https://a0.muscache.com/im/pictures/monet/Luxury-570973165437649140/original/1e20dfa7-5f47-4c13-b564-78b19e6e6936?im_w=1200",
+      "https://a0.muscache.com/im/pictures/monet/Luxury-570973165437649140/original/e757d701-f649-4f8e-a7f3-754e4654e38c?im_w=1200"
+    ]
+  },
+  {
+    id: 2,
+    title: "Modern Mountain Retreat",
+    location: "Aspen, Colorado",
+    distance: "820 miles away",
+    dates: "Jan 5-10",
+    price: 875,
+    rating: 4.95,
+    isSuperHost: true,
+    roomType: "Entire chalet",
+    beds: 3,
+    baths: 2,
+    amenities: ["Ski-in/out", "Hot tub", "Fireplace"],
+    images: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-39934917/original/227ad875-f49a-432f-9e92-65aac4e03931.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-39934917/original/cb4f5fb5-8f92-4102-9987-4c4c87337fb5.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-39934917/original/d25f0490-c82b-4f66-ac46-1770c3063c21.jpeg?im_w=1200"
+    ]
+  },
+  {
+    id: 3,
+    title: "Historic Townhouse",
+    location: "Charleston, South Carolina",
+    distance: "1,200 miles away",
+    dates: "Dec 1-6",
+    price: 425,
+    rating: 4.92,
+    isNew: true,
+    roomType: "Entire townhouse",
+    beds: 2,
+    baths: 2.5,
+    amenities: ["Historic district", "Patio", "Bikes"],
+    images: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-52800305/original/3ae97076-6969-49da-8a20-f461b4b86903.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-52800305/original/4c6745e7-cf0f-4214-8661-7e1847fef6cd.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-52800305/original/62b30615-73e3-44c2-a2f5-a45e8df0e2b5.jpeg?im_w=1200"
+    ]
+  },
+  {
+    id: 4,
+    title: "Lakefront Paradise",
+    location: "Lake Tahoe, Nevada",
+    distance: "45 miles away",
+    dates: "Aug 15-20",
+    price: 650,
+    rating: 4.88,
+    roomType: "Entire cabin",
+    beds: 3,
+    baths: 2,
+    amenities: ["Lake access", "Kayaks", "Deck"],
+    images: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-45465864/original/3d966c94-4c87-479c-8f68-89b4788b5b89.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-45465864/original/51e2f5e7-0b28-4ee0-a87b-c0d722c55778.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-45465864/original/c8333044-6276-4b47-9f0b-ed8662947ea4.jpeg?im_w=1200"
+    ]
+  },
+  {
+    id: 5,
+    title: "Desert Oasis",
+    location: "Joshua Tree, California",
+    distance: "165 miles away",
+    dates: "Oct 8-13",
+    price: 395,
+    rating: 4.97,
+    isSuperHost: true,
+    roomType: "Entire house",
+    beds: 2,
+    baths: 1,
+    amenities: ["Stargazing", "Hot tub", "Fire pit"],
+    images: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-53733023/original/2a3e7893-8d24-4475-947f-6f8dd32798b2.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-53733023/original/ec41d0a9-0609-409c-b45b-3405a7759415.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-53733023/original/570b726f-df84-4erb-8df6-0c892cf8aa4f.jpeg?im_w=1200"
+    ]
+  },
+  {
+    id: 6,
+    title: "Tropical Villa",
+    location: "Maui, Hawaii",
+    distance: "2,680 miles away",
+    dates: "Sep 20-25",
+    price: 895,
+    rating: 4.94,
+    isSuperHost: true,
+    roomType: "Entire villa",
+    beds: 4,
+    baths: 3,
+    amenities: ["Ocean view", "Pool", "Beach access"],
+    images: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-40018740/original/d8a4a18a-d244-433a-b05b-0c9679b5d2a1.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-40018740/original/da951ef7-3c5f-42d6-8abb-95c5ca7f75f2.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-40018740/original/c9ea0977-c739-4a78-ac26-aa8e22f495b1.jpeg?im_w=1200"
+    ]
+  },
+  {
+    id: 7,
+    title: "Urban Loft",
+    location: "New York City, New York",
+    distance: "2,120 miles away",
+    dates: "Nov 1-6",
+    price: 525,
+    rating: 4.89,
+    isNew: true,
+    roomType: "Entire loft",
+    beds: 1,
+    baths: 1,
+    amenities: ["City view", "Gym", "Doorman"],
+    images: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-664806628366134108/original/6e4e0af6-c23e-4707-b132-174b17506bb6.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-664806628366134108/original/1d5d8517-ea13-4f54-9947-61a5165c63c1.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-664806628366134108/original/356c3ba3-6e10-4e67-9fda-c26ded4f85d6.jpeg?im_w=1200"
+    ]
+  },
+  {
+    id: 8,
+    title: "Mountain View Cabin",
+    location: "Breckenridge, Colorado",
+    distance: "730 miles away",
+    dates: "Dec 20-25",
+    price: 475,
+    rating: 4.96,
+    roomType: "Entire cabin",
+    beds: 2,
+    baths: 1,
+    amenities: ["Mountain view", "Hot tub", "Fireplace"],
+    images: [
+      "https://a0.muscache.com/im/pictures/miso/Hosting-715639287846526749/original/2ce2a8d0-69c7-4b2b-a0ef-9c9d465067ea.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-715639287846526749/original/f3f28f3c-19c0-4140-89d9-4809e8e0d1f5.jpeg?im_w=1200",
+      "https://a0.muscache.com/im/pictures/miso/Hosting-715639287846526749/original/51f56c62-61ad-45c7-9a66-494159ee6ee1.jpeg?im_w=1200"
+    ]
+  },
+  {
+    id: 1,
     title: 'Modern Beachfront Villa',
     location: 'Malibu, California',
     distance: '50 miles away',
@@ -124,16 +274,30 @@ const MOCK_PROPERTIES: PropertyProps[] = [
 const Index: React.FC = () => {
   const [properties, setProperties] = useState<PropertyProps[]>([]);
   const [loading, setLoading] = useState(true);
+  const [priceFilter, setPriceFilter] = useState<number | null>(null);
+  const [roomTypeFilter, setRoomTypeFilter] = useState<string | null>(null);
 
   useEffect(() => {
     // Simulate API loading
     const timer = setTimeout(() => {
-      setProperties(MOCK_PROPERTIES);
+      let filteredProperties = [...MOCK_PROPERTIES];
+      
+      // Apply price filter
+      if (priceFilter) {
+        filteredProperties = filteredProperties.filter(prop => prop.price <= priceFilter);
+      }
+      
+      // Apply room type filter
+      if (roomTypeFilter) {
+        filteredProperties = filteredProperties.filter(prop => prop.roomType === roomTypeFilter);
+      }
+      
+      setProperties(filteredProperties);
       setLoading(false);
     }, 800);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [priceFilter, roomTypeFilter]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -142,6 +306,32 @@ const Index: React.FC = () => {
       
       <main className="flex-grow pb-10">
         <div className="container mx-auto px-4 md:px-8 mt-8">
+          <div className="mb-6 flex flex-wrap gap-4">
+            <select
+              className="px-4 py-2 border rounded-full text-sm hover:border-gray-400 transition-colors duration-200"
+              onChange={(e) => setPriceFilter(e.target.value ? Number(e.target.value) : null)}
+              defaultValue=""
+            >
+              <option value="">Price range</option>
+              <option value="500">Under $500</option>
+              <option value="1000">Under $1,000</option>
+              <option value="1500">Under $1,500</option>
+            </select>
+
+            <select
+              className="px-4 py-2 border rounded-full text-sm hover:border-gray-400 transition-colors duration-200"
+              onChange={(e) => setRoomTypeFilter(e.target.value || null)}
+              defaultValue=""
+            >
+              <option value="">Property type</option>
+              <option value="Entire villa">Villa</option>
+              <option value="Entire chalet">Chalet</option>
+              <option value="Entire cabin">Cabin</option>
+              <option value="Entire loft">Loft</option>
+              <option value="Entire townhouse">Townhouse</option>
+            </select>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {loading ? (
               // Loading skeletons
@@ -170,6 +360,13 @@ const Index: React.FC = () => {
               ))
             )}
           </div>
+          
+          {!loading && properties.length === 0 && (
+            <div className="text-center py-10">
+              <h3 className="text-xl font-medium mb-2">No properties found</h3>
+              <p className="text-gray-500">Try adjusting your filters to find more options</p>
+            </div>
+          )}
         </div>
       </main>
       

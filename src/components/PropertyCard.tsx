@@ -15,6 +15,12 @@ export interface PropertyProps {
   price: number;
   rating: number;
   images: string[];
+  isSuperHost?: boolean;
+  roomType?: string;
+  beds?: number;
+  baths?: number;
+  amenities?: string[];
+  isNew?: boolean;
 }
 
 const PropertyCard: React.FC<PropertyProps> = ({
@@ -25,7 +31,13 @@ const PropertyCard: React.FC<PropertyProps> = ({
   dates,
   price,
   rating,
-  images
+  images,
+  isSuperHost,
+  roomType,
+  beds,
+  baths,
+  amenities,
+  isNew
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -41,10 +53,10 @@ const PropertyCard: React.FC<PropertyProps> = ({
 
   return (
     <Card 
-      className="overflow-hidden border-none shadow-none hover:cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
+      className="overflow-hidden border-none shadow-none hover:cursor-pointer transition-transform duration-300 hover:scale-[1.02] group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={() => toast(`Selected: ${title}`, { description: location })}
+      onClick={() => toast(`Selected: ${title}`, { description: `${roomType} • ${beds} beds • ${baths} baths` })}
     >
       <CardContent className="p-0">
         <div className="relative">
@@ -80,18 +92,38 @@ const PropertyCard: React.FC<PropertyProps> = ({
           </Carousel>
           
           <div className="mt-3">
-            <div className="flex justify-between">
-              <h3 className="font-medium text-black">{location}</h3>
+            <div className="flex justify-between items-start">
+              <div className="flex-grow">
+                {isSuperHost && (
+                  <span className="inline-block px-2 py-1 rounded-full text-[10px] font-semibold bg-rose-100 text-rose-700 mb-1">
+                    SUPERHOST
+                  </span>
+                )}
+                {isNew && (
+                  <span className="inline-block px-2 py-1 rounded-full text-[10px] font-semibold bg-teal-100 text-teal-700 mb-1 ml-1">
+                    NEW
+                  </span>
+                )}
+                <h3 className="font-medium text-black">{location}</h3>
+              </div>
               <div className="flex items-center">
                 <Star className="w-4 h-4 mr-1 fill-current" />
-                <span>{rating.toFixed(1)}</span>
+                <span>{rating.toFixed(2)}</span>
               </div>
             </div>
+            <p className="text-gray-500 text-sm">{roomType}</p>
             <p className="text-gray-500 text-sm">{distance}</p>
             <p className="text-gray-500 text-sm">{dates}</p>
-            <p className="mt-1">
-              <span className="font-semibold">${price}</span> night
-            </p>
+            <div className="mt-1 flex justify-between items-center">
+              <p>
+                <span className="font-semibold">${price}</span> night
+              </p>
+              {amenities && amenities.length > 0 && (
+                <div className="text-xs text-gray-500">
+                  {amenities.slice(0, 2).join(' • ')}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </CardContent>
