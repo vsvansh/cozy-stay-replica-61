@@ -8,11 +8,13 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PropertyDetails from "./pages/PropertyDetails";
 import ComingSoon from "./pages/ComingSoon";
+import Login from "./pages/Login";
+import Host from "./pages/Host";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, // 1 minute
+      staleTime: 60 * 1000,
       refetchOnWindowFocus: false,
     },
   },
@@ -27,10 +29,12 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/property/:id" element={<PropertyDetails />} />
-          <Route path="/host" element={<ComingSoon title="Host your home" />} />
-          <Route path="/login" element={<ComingSoon title="Login" />} />
+          <Route path="/host" element={<Host />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<ComingSoon title="Sign up" />} />
           <Route path="/help" element={<ComingSoon title="Help Center" />} />
+          <Route path="/experiences" element={<ComingSoon title="Experiences" />} />
+          <Route path="/online-experiences" element={<ComingSoon title="Online Experiences" />} />
           <Route path="/ComingSoon" element={<ComingSoon />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

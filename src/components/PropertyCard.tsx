@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Heart, Star } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
@@ -45,8 +44,16 @@ const PropertyCard: React.FC<PropertyProps> = ({
   const [imgError, setImgError] = useState<Record<number, boolean>>({});
   const navigate = useNavigate();
 
-  // Fallback image in case the original fails to load
-  const fallbackImage = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+  const fallbackImages = [
+    "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg",
+    "https://a0.muscache.com/im/pictures/miso/Hosting-40792948/original/bd32c473-605c-4ab7-9929-841ac67107cc.jpeg",
+    "https://a0.muscache.com/im/pictures/73c220b6-e292-4eb7-9a09-8ed95e018ad5.jpg"
+  ];
+
+  const handleImageError = (index: number) => {
+    setImgError(prev => ({ ...prev, [index]: true }));
+    console.log(`Image failed to load at index ${index}, using fallback`);
+  };
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -55,10 +62,6 @@ const PropertyCard: React.FC<PropertyProps> = ({
       description: location,
       duration: 3000,
     });
-  };
-
-  const handleImageError = (index: number) => {
-    setImgError(prev => ({ ...prev, [index]: true }));
   };
 
   return (
@@ -76,7 +79,7 @@ const PropertyCard: React.FC<PropertyProps> = ({
                 <CarouselItem key={`${id}-image-${index}`}>
                   <div className="aspect-square relative">
                     <img
-                      src={imgError[index] ? fallbackImage : image}
+                      src={imgError[index] ? fallbackImages[index % fallbackImages.length] : image}
                       alt={`${title || location} - ${index + 1}`}
                       className="object-cover w-full h-full transition-all duration-300"
                       onError={() => handleImageError(index)}
