@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +20,13 @@ export default {
 		},
 		extend: {
 			colors: {
+				airbnb: {
+					red: "#FF5A5F",
+					dark: "#484848",
+					light: "#767676",
+					black: "#222222",
+					white: "#FFFFFF",
+				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
