@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import CategoryFilter from '@/components/CategoryFilter';
 import PropertyCard, { PropertyProps } from '@/components/PropertyCard';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const MOCK_PROPERTIES: PropertyProps[] = [
   {
@@ -16,7 +17,8 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     rating: 4.98,
     images: [
       'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/80e77606-f487-4e0d-a9d4-259d3b2a865d.jpeg'
+      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/80e77606-f487-4e0d-a9d4-259d3b2a865d.jpeg',
+      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/f69c345e-e95a-448e-8d0f-cacba691bbf2.jpeg'
     ]
   },
   {
@@ -29,7 +31,8 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     rating: 4.85,
     images: [
       'https://a0.muscache.com/im/pictures/miso/Hosting-40792948/original/bd32c473-605c-4ab7-9929-841ac67107cc.jpeg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-40792948/original/c2d740ea-3d06-4993-b869-75d6464a6697.jpeg'
+      'https://a0.muscache.com/im/pictures/miso/Hosting-40792948/original/c2d740ea-3d06-4993-b869-75d6464a6697.jpeg',
+      'https://a0.muscache.com/im/pictures/miso/Hosting-40792948/original/8737b6fc-e7ee-4400-a64f-6015a69a38db.jpeg'
     ]
   },
   {
@@ -42,7 +45,8 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     rating: 4.75,
     images: [
       'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/f69c345e-e95a-448e-8d0f-cacba691bbf2.jpeg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/8737b6fc-e7ee-4400-a64f-6015a69a38db.jpeg'
+      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/8737b6fc-e7ee-4400-a64f-6015a69a38db.jpeg',
+      'https://a0.muscache.com/im/pictures/e25a9b25-fa98-4160-bfd1-039287bf38b6.jpg'
     ]
   },
   {
@@ -55,7 +59,8 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     rating: 4.92,
     images: [
       'https://a0.muscache.com/im/pictures/miso/Hosting-29459696/original/e8b0a583-1eb5-475f-86a8-693fba2aad7c.jpeg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-29459696/original/4c661645-cf7d-4b98-8519-223805c82fbc.jpeg'
+      'https://a0.muscache.com/im/pictures/miso/Hosting-29459696/original/4c661645-cf7d-4b98-8519-223805c82fbc.jpeg',
+      'https://a0.muscache.com/im/pictures/prohost-api/Hosting-32240386/original/fd195576-8282-4457-8f44-7d1c4d7e4a2b.jpeg'
     ]
   },
   {
@@ -68,7 +73,8 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     rating: 4.95,
     images: [
       'https://a0.muscache.com/im/pictures/e25a9b25-fa98-4160-bfd1-039287bf38b6.jpg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-42566460/original/00d2eebb-bad3-43ba-ad52-3eb88e698a48.jpeg'
+      'https://a0.muscache.com/im/pictures/miso/Hosting-42566460/original/00d2eebb-bad3-43ba-ad52-3eb88e698a48.jpeg',
+      'https://a0.muscache.com/im/pictures/baab5524-b606-45c0-babf-3a0d81c2d297.jpg'
     ]
   },
   {
@@ -81,7 +87,8 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     rating: 4.88,
     images: [
       'https://a0.muscache.com/im/pictures/prohost-api/Hosting-32240386/original/fd195576-8282-4457-8f44-7d1c4d7e4a2b.jpeg',
-      'https://a0.muscache.com/im/pictures/prohost-api/Hosting-32240386/original/86c735e6-9aaf-4b37-be56-a5b1d6a4b23a.jpeg'
+      'https://a0.muscache.com/im/pictures/prohost-api/Hosting-32240386/original/86c735e6-9aaf-4b37-be56-a5b1d6a4b23a.jpeg',
+      'https://a0.muscache.com/im/pictures/73c220b6-e292-4eb7-9a09-8ed95e018ad5.jpg'
     ]
   },
   {
@@ -94,7 +101,8 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     rating: 4.97,
     images: [
       'https://a0.muscache.com/im/pictures/73c220b6-e292-4eb7-9a09-8ed95e018ad5.jpg',
-      'https://a0.muscache.com/im/pictures/b48cbe2b-fbc8-47a6-a14e-7e5f94f38c8e.jpg'
+      'https://a0.muscache.com/im/pictures/b48cbe2b-fbc8-47a6-a14e-7e5f94f38c8e.jpg',
+      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg'
     ]
   },
   {
@@ -107,57 +115,60 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     rating: 4.92,
     images: [
       'https://a0.muscache.com/im/pictures/baab5524-b606-45c0-babf-3a0d81c2d297.jpg',
-      'https://a0.muscache.com/im/pictures/d3d7659f-e66e-4aca-b4db-d0aa68d34713.jpg'
+      'https://a0.muscache.com/im/pictures/d3d7659f-e66e-4aca-b4db-d0aa68d34713.jpg',
+      'https://a0.muscache.com/im/pictures/miso/Hosting-40792948/original/bd32c473-605c-4ab7-9929-841ac67107cc.jpeg'
     ]
   }
 ];
 
 const Index: React.FC = () => {
-  const [visibleCards, setVisibleCards] = useState<PropertyProps[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const [properties, setProperties] = useState<PropertyProps[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate progressive loading of cards for a nice animation effect
-    const showCards = async () => {
-      setVisibleCards([]);
-      
-      // Start showing cards one by one with a slight delay
-      for (let i = 0; i < MOCK_PROPERTIES.length; i++) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        setVisibleCards(prev => [...prev, MOCK_PROPERTIES[i]]);
-      }
-    };
+    // Simulate API loading
+    const timer = setTimeout(() => {
+      setProperties(MOCK_PROPERTIES);
+      setLoading(false);
+    }, 800);
 
-    showCards();
-    setTimeout(() => setLoaded(true), 500);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className={cn(
-      "flex flex-col min-h-screen transition-opacity duration-500",
-      loaded ? "opacity-100" : "opacity-0"
-    )}>
+    <div className="flex flex-col min-h-screen">
       <Header />
       <CategoryFilter />
       
-      <main className="flex-grow pb-10 transition-all duration-300">
+      <main className="flex-grow pb-10">
         <div className="container mx-auto px-4 md:px-8 mt-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {visibleCards.map((property, index) => (
-              <div 
-                key={property.id}
-                className={cn(
-                  "opacity-0 transform translate-y-4",
-                  loaded && `animate-[fadeIn_0.5s_ease-out_${index * 0.1}s_forwards]`
-                )}
-                style={{
-                  animationDelay: `${index * 0.05}s`,
-                  animationFillMode: 'forwards'
-                }}
-              >
-                <PropertyCard {...property} />
-              </div>
-            ))}
+            {loading ? (
+              // Loading skeletons
+              Array.from({ length: 8 }).map((_, index) => (
+                <div key={`skeleton-${index}`} className="animate-pulse">
+                  <Skeleton className="aspect-square w-full rounded-xl" />
+                  <div className="mt-3 space-y-2">
+                    <Skeleton className="h-4 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                    <Skeleton className="h-4 w-1/4" />
+                  </div>
+                </div>
+              ))
+            ) : (
+              properties.map((property, index) => (
+                <div 
+                  key={property.id}
+                  className={cn(
+                    "opacity-0",
+                    "animate-[fadeIn_0.5s_ease-out_forwards]"
+                  )}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <PropertyCard {...property} />
+                </div>
+              ))
+            )}
           </div>
         </div>
       </main>

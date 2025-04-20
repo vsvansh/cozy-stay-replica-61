@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
+import { toast } from "sonner";
 
 type Category = {
   id: number;
@@ -35,13 +36,30 @@ const CategoryFilter: React.FC = () => {
   const isMobile = useIsMobile();
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
 
+  const handleCategoryClick = (categoryId: number) => {
+    const selected = categoryId === activeCategory ? null : categoryId;
+    setActiveCategory(selected);
+    
+    if (selected) {
+      const category = categories.find(c => c.id === selected);
+      toast(`Filtered by: ${category?.name}`, {
+        icon: category?.icon,
+        duration: 3000,
+      });
+    } else {
+      toast('All categories shown', {
+        duration: 3000,
+      });
+    }
+  };
+
   return (
     <div className="sticky top-[72px] z-40 bg-white shadow-sm border-b">
       <div className="container mx-auto px-4 md:px-8 py-4">
         <ScrollArea className="w-full whitespace-nowrap pb-3">
           <div className="flex gap-8 pb-1">
             {categories.map((category) => (
-              <div 
+              <button 
                 key={category.id}
                 className={cn(
                   "flex flex-col items-center cursor-pointer pb-2 transition-all duration-200 text-sm min-w-[56px] hover:opacity-100",
@@ -49,7 +67,7 @@ const CategoryFilter: React.FC = () => {
                     ? "text-black border-b-2 border-black" 
                     : "text-gray-500 hover:text-black hover:border-b-2 hover:border-gray-300 opacity-85"
                 )}
-                onClick={() => setActiveCategory(category.id === activeCategory ? null : category.id)}
+                onClick={() => handleCategoryClick(category.id)}
               >
                 <div className={cn(
                   "text-2xl mb-1 transition-transform duration-200",
@@ -58,7 +76,7 @@ const CategoryFilter: React.FC = () => {
                   {category.icon}
                 </div>
                 <span className="text-xs">{category.name}</span>
-              </div>
+              </button>
             ))}
           </div>
         </ScrollArea>
