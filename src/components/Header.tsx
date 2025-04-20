@@ -1,8 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
-import { Search, User, Globe } from 'lucide-react';
+import { Search, User, Globe, Menu } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { toast } from "sonner";
@@ -26,12 +34,7 @@ const Header = () => {
   const handleSearch = () => {
     setSearchActive(!searchActive);
     // In a real app, this would open the search interface
-    if (!searchActive) {
-      toast("Search activated", {
-        description: "Search functionality would open here",
-        duration: 3000,
-      });
-    }
+    navigate('/');
   };
 
   return (
@@ -49,6 +52,54 @@ const Header = () => {
               </svg>
               <span className="ml-2 text-airbnb-red font-bold text-2xl hidden sm:inline">airbnb</span>
             </Link>
+          </div>
+
+          {/* Navigation Menu */}
+          <div className="hidden md:block">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Stays</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid gap-3 p-4 w-[400px]">
+                      <NavigationMenuLink asChild>
+                        <Link to="/" className="block p-2 hover:bg-slate-100 rounded-md">Homes</Link>
+                      </NavigationMenuLink>
+                      <NavigationMenuLink asChild>
+                        <Link to="/" className="block p-2 hover:bg-slate-100 rounded-md">Apartments</Link>
+                      </NavigationMenuLink>
+                      <NavigationMenuLink asChild>
+                        <Link to="/" className="block p-2 hover:bg-slate-100 rounded-md">Cabins</Link>
+                      </NavigationMenuLink>
+                      <NavigationMenuLink asChild>
+                        <Link to="/" className="block p-2 hover:bg-slate-100 rounded-md">Luxury</Link>
+                      </NavigationMenuLink>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Experiences</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid gap-3 p-4 w-[400px]">
+                      <NavigationMenuLink asChild>
+                        <Link to="/ComingSoon?title=Experiences" className="block p-2 hover:bg-slate-100 rounded-md">Adventures</Link>
+                      </NavigationMenuLink>
+                      <NavigationMenuLink asChild>
+                        <Link to="/ComingSoon?title=Experiences" className="block p-2 hover:bg-slate-100 rounded-md">Tours</Link>
+                      </NavigationMenuLink>
+                      <NavigationMenuLink asChild>
+                        <Link to="/ComingSoon?title=Experiences" className="block p-2 hover:bg-slate-100 rounded-md">Activities</Link>
+                      </NavigationMenuLink>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link to="/ComingSoon?title=Online Experiences" className="block p-2 hover:bg-slate-100 rounded-md">
+                    Online Experiences
+                  </Link>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
           </div>
 
           {/* Search bar */}
@@ -100,28 +151,37 @@ const Header = () => {
               Airbnb your home
             </Link>
             
-            <button 
-              className="rounded-full p-2 hover:bg-gray-100 transition-colors duration-200"
-              onClick={() => {
-                toast("Language and currency", {
-                  description: "Change your preferences",
-                  duration: 2000,
-                });
-              }}
-            >
-              <Globe className="h-5 w-5" />
-            </button>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  className="rounded-full p-2 hover:bg-gray-100 transition-colors duration-200"
+                  aria-label="Language and currency settings"
+                >
+                  <Globe className="h-5 w-5" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-56 p-0 bg-white" align="end">
+                <div className="py-2">
+                  <div className="px-4 py-3 font-semibold border-b">Language and region</div>
+                  <button className="w-full text-left px-4 py-2 hover:bg-gray-100">English (US)</button>
+                  <button className="w-full text-left px-4 py-2 hover:bg-gray-100">$ USD</button>
+                </div>
+              </PopoverContent>
+            </Popover>
             
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="rounded-full border flex items-center gap-2 p-2 md:p-3 shadow-sm hover:shadow-md transition-all duration-300">
+                  <Menu className="h-4 w-4 md:hidden" />
                   <div className="flex items-center">
                     <User className="h-5 w-5 text-gray-700" />
                   </div>
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-56 p-0 animate-in fade-in-80 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:zoom-out-95" align="end">
+              <PopoverContent className="w-64 p-0 animate-in fade-in-80 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:zoom-out-95 bg-white" align="end">
                 <div className="py-2">
+                  <div className="font-semibold border-b pb-2 px-4">Profile</div>
                   <Link 
                     to="/signup" 
                     className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-200"
@@ -135,6 +195,20 @@ const Header = () => {
                     Log in
                   </Link>
                   <hr className="my-1" />
+                  <div className="font-semibold border-b pb-2 px-4">Account</div>
+                  <Link 
+                    to="/ComingSoon?title=Trips" 
+                    className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-200"
+                  >
+                    Trips
+                  </Link>
+                  <Link 
+                    to="/ComingSoon?title=Wishlists" 
+                    className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-200"
+                  >
+                    Wishlists
+                  </Link>
+                  <hr className="my-1" />
                   <Link 
                     to="/host" 
                     className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-200"
@@ -142,10 +216,22 @@ const Header = () => {
                     Airbnb your home
                   </Link>
                   <Link 
+                    to="/ComingSoon?title=Host an Experience" 
+                    className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-200"
+                  >
+                    Host an experience
+                  </Link>
+                  <Link 
                     to="/help" 
                     className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-200"
                   >
                     Help Center
+                  </Link>
+                  <Link 
+                    to="/ComingSoon?title=Account Settings" 
+                    className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-200"
+                  >
+                    Account settings
                   </Link>
                 </div>
               </PopoverContent>

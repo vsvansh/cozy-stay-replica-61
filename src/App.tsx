@@ -31,6 +31,7 @@ const App = () => (
           <Route path="/login" element={<ComingSoon title="Login" />} />
           <Route path="/signup" element={<ComingSoon title="Sign up" />} />
           <Route path="/help" element={<ComingSoon title="Help Center" />} />
+          <Route path="/ComingSoon" element={<ComingSoon />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

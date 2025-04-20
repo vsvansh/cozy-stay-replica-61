@@ -42,19 +42,24 @@ const PropertyCard: React.FC<PropertyProps> = ({
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [imgError, setImgError] = useState<Record<number, boolean>>({});
   const navigate = useNavigate();
+
+  // Fallback image in case the original fails to load
+  const fallbackImage = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsFavorite(!isFavorite);
-    toast(isFavorite ? "Removed from favorites" : "Added to favorites", {
+    toast(isFavorite ? "Removed from wishlist" : "Saved to wishlist", {
       description: location,
       duration: 3000,
     });
   };
 
-  // Fallback image in case the original fails to load
-  const fallbackImage = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+  const handleImageError = (index: number) => {
+    setImgError(prev => ({ ...prev, [index]: true }));
+  };
 
   return (
     <Card 
@@ -71,12 +76,11 @@ const PropertyCard: React.FC<PropertyProps> = ({
                 <CarouselItem key={`${id}-image-${index}`}>
                   <div className="aspect-square relative">
                     <img
-                      src={image || fallbackImage}
-                      alt={`${title} - ${index + 1}`}
+                      src={imgError[index] ? fallbackImage : image}
+                      alt={`${title || location} - ${index + 1}`}
                       className="object-cover w-full h-full transition-all duration-300"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = fallbackImage;
-                      }}
+                      onError={() => handleImageError(index)}
+                      loading="lazy"
                     />
                   </div>
                 </CarouselItem>
@@ -93,7 +97,7 @@ const PropertyCard: React.FC<PropertyProps> = ({
             <button
               onClick={toggleFavorite}
               className="absolute top-3 right-3 z-10 transition-transform duration-200 hover:scale-110"
-              aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+              aria-label={isFavorite ? "Remove from wishlist" : "Save to wishlist"}
             >
               <Heart className={`h-6 w-6 ${isFavorite ? 'fill-red-500 text-red-500' : 'text-white stroke-[2.5]'}`} />
             </button>

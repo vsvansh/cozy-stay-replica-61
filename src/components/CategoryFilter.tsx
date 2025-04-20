@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { toast } from "sonner";
+import { useNavigate } from 'react-router-dom';
 
 type Category = {
   id: number;
@@ -35,6 +35,7 @@ const categories: Category[] = [
 const CategoryFilter: React.FC = () => {
   const isMobile = useIsMobile();
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const handleCategoryClick = (categoryId: number) => {
     const selected = categoryId === activeCategory ? null : categoryId;
@@ -42,14 +43,13 @@ const CategoryFilter: React.FC = () => {
     
     if (selected) {
       const category = categories.find(c => c.id === selected);
-      toast(`Filtered by: ${category?.name}`, {
-        icon: category?.icon,
-        duration: 3000,
-      });
+      // In a real app, this would navigate to a filtered page
+      // Instead we'll use the ComingSoon page for now
+      if (category) {
+        navigate(`/ComingSoon?title=${encodeURIComponent(`${category.icon} ${category.name} listings`)}`);
+      }
     } else {
-      toast('All categories shown', {
-        duration: 3000,
-      });
+      navigate('/');
     }
   };
 

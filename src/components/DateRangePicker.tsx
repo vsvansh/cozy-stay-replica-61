@@ -17,16 +17,29 @@ interface DateRangePickerProps {
   dateRange: DateRange;
   onDateRangeChange: (range: DateRange) => void;
   className?: string;
+  minDate?: Date;
 }
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({
   dateRange,
   onDateRangeChange,
   className,
+  minDate = new Date(),
 }) => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleSelect = (range: DateRange | undefined) => {
+    if (range) {
+      onDateRangeChange(range);
+      if (range.from && range.to) {
+        setOpen(false);
+      }
+    }
+  };
+
   return (
     <div className={cn("grid gap-2", className)}>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             id="date"
@@ -55,12 +68,23 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
           <Calendar
             initialFocus
             mode="range"
-            defaultMonth={dateRange?.from}
+            defaultMonth={dateRange?.from || minDate}
             selected={dateRange}
-            onSelect={onDateRangeChange}
+            onSelect={handleSelect}
             numberOfMonths={2}
+            disabled={{ before: minDate }}
             className={cn("p-3 pointer-events-auto")}
           />
+          <div className="p-3 border-t border-gray-200 flex justify-end">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setOpen(false)}
+              className="text-sm"
+            >
+              Done
+            </Button>
+          </div>
         </PopoverContent>
       </Popover>
     </div>

@@ -1,15 +1,27 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { ArrowLeft, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Header from '@/components/Header';
 
 interface ComingSoonProps {
-  title: string;
+  title?: string;
 }
 
-const ComingSoon: React.FC<ComingSoonProps> = ({ title }) => {
+const ComingSoon: React.FC<ComingSoonProps> = ({ title: propTitle }) => {
+  const location = useLocation();
+  const [title, setTitle] = useState(propTitle || 'Feature');
+  
+  useEffect(() => {
+    // Extract title from query params if available
+    const searchParams = new URLSearchParams(location.search);
+    const queryTitle = searchParams.get('title');
+    if (queryTitle) {
+      setTitle(queryTitle);
+    }
+  }, [location, propTitle]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Header />

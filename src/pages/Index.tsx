@@ -6,6 +6,7 @@ import PropertyCard, { PropertyProps } from '@/components/PropertyCard';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 
+// Define mock properties with unique IDs
 const MOCK_PROPERTIES: PropertyProps[] = [
   {
     id: 1,
@@ -158,7 +159,7 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     ]
   },
   {
-    id: 1,
+    id: 9,
     title: 'Modern Beachfront Villa',
     location: 'Malibu, California',
     distance: '50 miles away',
@@ -172,7 +173,7 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     ]
   },
   {
-    id: 2,
+    id: 10,
     title: 'Luxurious Cabin with Mountain View',
     location: 'Aspen, Colorado',
     distance: '820 miles away',
@@ -186,7 +187,7 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     ]
   },
   {
-    id: 3,
+    id: 11,
     title: 'Cozy Lakefront Cottage',
     location: 'Lake Tahoe, Nevada',
     distance: '45 miles away',
@@ -200,7 +201,7 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     ]
   },
   {
-    id: 4,
+    id: 12,
     title: 'Modern Downtown Loft',
     location: 'Seattle, Washington',
     distance: '1,240 miles away',
@@ -214,7 +215,7 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     ]
   },
   {
-    id: 5,
+    id: 13,
     title: 'Tropical Beach House',
     location: 'Kihei, Hawaii',
     distance: '2,680 miles away',
@@ -228,7 +229,7 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     ]
   },
   {
-    id: 6,
+    id: 14,
     title: 'Historic Brownstone',
     location: 'Boston, Massachusetts',
     distance: '2,120 miles away',
@@ -242,7 +243,7 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     ]
   },
   {
-    id: 7,
+    id: 15,
     title: 'Desert Oasis with Pool',
     location: 'Scottsdale, Arizona',
     distance: '820 miles away',
@@ -256,7 +257,7 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     ]
   },
   {
-    id: 8,
+    id: 16,
     title: 'Ski-in/Ski-out Chalet',
     location: 'Park City, Utah',
     distance: '730 miles away',
@@ -348,7 +349,7 @@ const Index: React.FC = () => {
             ) : (
               properties.map((property, index) => (
                 <div 
-                  key={property.id}
+                  key={`property-${property.id}-${index}`}
                   className={cn(
                     "opacity-0",
                     "animate-[fadeIn_0.5s_ease-out_forwards]"
@@ -376,41 +377,41 @@ const Index: React.FC = () => {
             <div>
               <h3 className="font-bold mb-4">Support</h3>
               <ul className="space-y-3 text-sm">
-                <li><a href="#" className="hover:underline transition-all duration-200">Help Center</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">AirCover</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">Safety information</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">Supporting people with disabilities</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">Cancellation options</a></li>
+                <li><Link to="/help" className="hover:underline transition-all duration-200">Help Center</Link></li>
+                <li><Link to="/ComingSoon?title=AirCover" className="hover:underline transition-all duration-200">AirCover</Link></li>
+                <li><Link to="/ComingSoon?title=Safety Information" className="hover:underline transition-all duration-200">Safety information</Link></li>
+                <li><Link to="/ComingSoon?title=Accessibility" className="hover:underline transition-all duration-200">Supporting people with disabilities</Link></li>
+                <li><Link to="/ComingSoon?title=Cancellation Options" className="hover:underline transition-all duration-200">Cancellation options</Link></li>
               </ul>
             </div>
             
             <div>
               <h3 className="font-bold mb-4">Community</h3>
               <ul className="space-y-3 text-sm">
-                <li><a href="#" className="hover:underline transition-all duration-200">Airbnb.org: disaster relief housing</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">Combating discrimination</a></li>
+                <li><Link to="/ComingSoon?title=Disaster Relief Housing" className="hover:underline transition-all duration-200">Airbnb.org: disaster relief housing</Link></li>
+                <li><Link to="/ComingSoon?title=Anti-Discrimination" className="hover:underline transition-all duration-200">Combating discrimination</Link></li>
               </ul>
             </div>
             
             <div>
               <h3 className="font-bold mb-4">Hosting</h3>
               <ul className="space-y-3 text-sm">
-                <li><a href="#" className="hover:underline transition-all duration-200">Airbnb your home</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">AirCover for Hosts</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">Hosting resources</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">Community forum</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">Hosting responsibly</a></li>
+                <li><Link to="/host" className="hover:underline transition-all duration-200">Airbnb your home</Link></li>
+                <li><Link to="/ComingSoon?title=AirCover for Hosts" className="hover:underline transition-all duration-200">AirCover for Hosts</Link></li>
+                <li><Link to="/ComingSoon?title=Hosting Resources" className="hover:underline transition-all duration-200">Hosting resources</Link></li>
+                <li><Link to="/ComingSoon?title=Community Forum" className="hover:underline transition-all duration-200">Community forum</Link></li>
+                <li><Link to="/ComingSoon?title=Responsible Hosting" className="hover:underline transition-all duration-200">Hosting responsibly</Link></li>
               </ul>
             </div>
             
             <div>
               <h3 className="font-bold mb-4">Airbnb</h3>
               <ul className="space-y-3 text-sm">
-                <li><a href="#" className="hover:underline transition-all duration-200">Newsroom</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">New features</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">Careers</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">Investors</a></li>
-                <li><a href="#" className="hover:underline transition-all duration-200">Gift cards</a></li>
+                <li><Link to="/ComingSoon?title=Newsroom" className="hover:underline transition-all duration-200">Newsroom</Link></li>
+                <li><Link to="/ComingSoon?title=New Features" className="hover:underline transition-all duration-200">New features</Link></li>
+                <li><Link to="/ComingSoon?title=Careers" className="hover:underline transition-all duration-200">Careers</Link></li>
+                <li><Link to="/ComingSoon?title=Investors" className="hover:underline transition-all duration-200">Investors</Link></li>
+                <li><Link to="/ComingSoon?title=Gift Cards" className="hover:underline transition-all duration-200">Gift cards</Link></li>
               </ul>
             </div>
           </div>
@@ -420,20 +421,20 @@ const Index: React.FC = () => {
               <span>© 2025 Airbnb, Inc.</span>
               <div className="hidden md:flex gap-2">
                 <span>·</span>
-                <a href="#" className="hover:underline transition-all duration-200">Privacy</a>
+                <Link to="/ComingSoon?title=Privacy" className="hover:underline transition-all duration-200">Privacy</Link>
                 <span>·</span>
-                <a href="#" className="hover:underline transition-all duration-200">Terms</a>
+                <Link to="/ComingSoon?title=Terms" className="hover:underline transition-all duration-200">Terms</Link>
                 <span>·</span>
-                <a href="#" className="hover:underline transition-all duration-200">Sitemap</a>
+                <Link to="/ComingSoon?title=Sitemap" className="hover:underline transition-all duration-200">Sitemap</Link>
               </div>
             </div>
             
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">English (US)</span>
+                <button className="text-sm font-medium hover:underline">English (US)</button>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-medium">$ USD</span>
+                <button className="text-sm font-medium hover:underline">$ USD</button>
               </div>
             </div>
           </div>
