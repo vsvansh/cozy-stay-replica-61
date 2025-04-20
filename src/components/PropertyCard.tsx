@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Heart, Star } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
@@ -41,19 +42,21 @@ const PropertyCard: React.FC<PropertyProps> = ({
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [imgError, setImgError] = useState<Record<number, boolean>>({});
   const navigate = useNavigate();
 
+  // More reliable fallback images
   const fallbackImages = [
-    "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg",
-    "https://a0.muscache.com/im/pictures/miso/Hosting-40792948/original/bd32c473-605c-4ab7-9929-841ac67107cc.jpeg",
-    "https://a0.muscache.com/im/pictures/73c220b6-e292-4eb7-9a09-8ed95e018ad5.jpg"
+    "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1556020685-ae41abfc9365?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1591825729269-caeb344f6df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80"
   ];
 
-  const handleImageError = (index: number) => {
-    setImgError(prev => ({ ...prev, [index]: true }));
-    console.log(`Image failed to load at index ${index}, using fallback`);
-  };
+  // Ensure we have images, use fallbacks if needed
+  const displayImages = images && images.length > 0 ? 
+    images.map((img, i) => img || fallbackImages[i % fallbackImages.length]) : 
+    fallbackImages.slice(0, 3);
 
   const toggleFavorite = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -75,14 +78,19 @@ const PropertyCard: React.FC<PropertyProps> = ({
         <div className="relative">
           <Carousel className="w-full">
             <CarouselContent className="rounded-xl overflow-hidden">
-              {images.map((image, index) => (
+              {displayImages.map((image, index) => (
                 <CarouselItem key={`${id}-image-${index}`}>
                   <div className="aspect-square relative">
                     <img
-                      src={imgError[index] ? fallbackImages[index % fallbackImages.length] : image}
+                      src={image}
                       alt={`${title || location} - ${index + 1}`}
                       className="object-cover w-full h-full transition-all duration-300"
-                      onError={() => handleImageError(index)}
+                      onError={(e) => {
+                        // If image fails, replace with fallback
+                        const target = e.target as HTMLImageElement;
+                        console.log(`Image failed to load: ${target.src}`);
+                        target.src = fallbackImages[index % fallbackImages.length];
+                      }}
                       loading="lazy"
                     />
                   </div>
@@ -90,7 +98,7 @@ const PropertyCard: React.FC<PropertyProps> = ({
               ))}
             </CarouselContent>
             
-            {images.length > 1 && isHovered && (
+            {displayImages.length > 1 && isHovered && (
               <>
                 <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 bg-white h-7 w-7 opacity-90 hover:opacity-100" />
                 <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 bg-white h-7 w-7 opacity-90 hover:opacity-100" />

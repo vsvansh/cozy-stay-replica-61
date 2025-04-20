@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -7,7 +6,7 @@ import PropertyCard, { PropertyProps } from '@/components/PropertyCard';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Define mock properties with unique IDs
+// Define mock properties with unique IDs and more reliable image URLs
 const MOCK_PROPERTIES: PropertyProps[] = [
   {
     id: 1,
@@ -23,9 +22,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     baths: 3.5,
     amenities: ["Pool", "Ocean view", "Kitchen"],
     images: [
-      "https://a0.muscache.com/im/pictures/monet/Luxury-570973165437649140/original/704c15d9-2d1e-42a8-b9d4-3da9f2c45026?im_w=1200",
-      "https://a0.muscache.com/im/pictures/monet/Luxury-570973165437649140/original/1e20dfa7-5f47-4c13-b564-78b19e6e6936?im_w=1200",
-      "https://a0.muscache.com/im/pictures/monet/Luxury-570973165437649140/original/e757d701-f649-4f8e-a7f3-754e4654e38c?im_w=1200"
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1615571022219-eb45cf7faa9d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
     ]
   },
   {
@@ -42,9 +41,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     baths: 2,
     amenities: ["Ski-in/out", "Hot tub", "Fireplace"],
     images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-39934917/original/227ad875-f49a-432f-9e92-65aac4e03931.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-39934917/original/cb4f5fb5-8f92-4102-9987-4c4c87337fb5.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-39934917/original/d25f0490-c82b-4f66-ac46-1770c3063c21.jpeg?im_w=1200"
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
     ]
   },
   {
@@ -61,9 +60,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     baths: 2.5,
     amenities: ["Historic district", "Patio", "Bikes"],
     images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-52800305/original/3ae97076-6969-49da-8a20-f461b4b86903.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-52800305/original/4c6745e7-cf0f-4214-8661-7e1847fef6cd.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-52800305/original/62b30615-73e3-44c2-a2f5-a45e8df0e2b5.jpeg?im_w=1200"
+      "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
     ]
   },
   {
@@ -79,9 +78,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     baths: 2,
     amenities: ["Lake access", "Kayaks", "Deck"],
     images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-45465864/original/3d966c94-4c87-479c-8f68-89b4788b5b89.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-45465864/original/51e2f5e7-0b28-4ee0-a87b-c0d722c55778.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-45465864/original/c8333044-6276-4b47-9f0b-ed8662947ea4.jpeg?im_w=1200"
+      "https://images.unsplash.com/photo-1556020685-ae41abfc9365?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1571055107559-3e67626fa8be?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1575517111839-3a3843ee7c8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
     ]
   },
   {
@@ -98,9 +97,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     baths: 1,
     amenities: ["Stargazing", "Hot tub", "Fire pit"],
     images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-53733023/original/2a3e7893-8d24-4475-947f-6f8dd32798b2.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-53733023/original/ec41d0a9-0609-409c-b45b-3405a7759415.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-53733023/original/570b726f-df84-4erb-8df6-0c892cf8aa4f.jpeg?im_w=1200"
+      "https://images.unsplash.com/photo-1591825729269-caeb344f6df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1587095951604-b9c077441d76?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
     ]
   },
   {
@@ -117,9 +116,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     baths: 3,
     amenities: ["Ocean view", "Pool", "Beach access"],
     images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-40018740/original/d8a4a18a-d244-433a-b05b-0c9679b5d2a1.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-40018740/original/da951ef7-3c5f-42d6-8abb-95c5ca7f75f2.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-40018740/original/c9ea0977-c739-4a78-ac26-aa8e22f495b1.jpeg?im_w=1200"
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1493809842364-78817add7ffb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
     ]
   },
   {
@@ -136,9 +135,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     baths: 1,
     amenities: ["City view", "Gym", "Doorman"],
     images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-664806628366134108/original/6e4e0af6-c23e-4707-b132-174b17506bb6.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-664806628366134108/original/1d5d8517-ea13-4f54-9947-61a5165c63c1.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-664806628366134108/original/356c3ba3-6e10-4e67-9fda-c26ded4f85d6.jpeg?im_w=1200"
+      "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
     ]
   },
   {
@@ -154,9 +153,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     baths: 1,
     amenities: ["Mountain view", "Hot tub", "Fireplace"],
     images: [
-      "https://a0.muscache.com/im/pictures/miso/Hosting-715639287846526749/original/2ce2a8d0-69c7-4b2b-a0ef-9c9d465067ea.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-715639287846526749/original/f3f28f3c-19c0-4140-89d9-4809e8e0d1f5.jpeg?im_w=1200",
-      "https://a0.muscache.com/im/pictures/miso/Hosting-715639287846526749/original/51f56c62-61ad-45c7-9a66-494159ee6ee1.jpeg?im_w=1200"
+      "https://images.unsplash.com/photo-1542718610-a1d656d1884c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+      "https://images.unsplash.com/photo-1502672023488-70e25813eb80?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80"
     ]
   },
   {
@@ -168,9 +167,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     price: 350,
     rating: 4.98,
     images: [
-      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/80e77606-f487-4e0d-a9d4-259d3b2a865d.jpeg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/f69c345e-e95a-448e-8d0f-cacba691bbf2.jpeg'
+      'https://images.unsplash.com/photo-1613490493576-7fde63acd811?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80',
+      'https://images.unsplash.com/photo-1610554675869-83c162b6059c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80',
+      'https://images.unsplash.com/photo-1584622781564-1d987f7333c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80'
     ]
   },
   {
@@ -182,9 +181,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     price: 275,
     rating: 4.85,
     images: [
-      'https://a0.muscache.com/im/pictures/miso/Hosting-40792948/original/bd32c473-605c-4ab7-9929-841ac67107cc.jpeg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-40792948/original/c2d740ea-3d06-4993-b869-75d6464a6697.jpeg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-40792948/original/8737b6fc-e7ee-4400-a64f-6015a69a38db.jpeg'
+      'https://images.unsplash.com/photo-1618767689160-da3fb3615148?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80',
+      'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80',
+      'https://images.unsplash.com/photo-1600585154526-990dced4db0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80'
     ]
   },
   {
@@ -196,9 +195,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     price: 195,
     rating: 4.75,
     images: [
-      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/f69c345e-e95a-448e-8d0f-cacba691bbf2.jpeg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/8737b6fc-e7ee-4400-a64f-6015a69a38db.jpeg',
-      'https://a0.muscache.com/im/pictures/e25a9b25-fa98-4160-bfd1-039287bf38b6.jpg'
+      'https://images.unsplash.com/photo-1601918774946-25832a4be0d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80',
+      'https://images.unsplash.com/photo-1594398901394-4e34939a4fd0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80',
+      'https://images.unsplash.com/photo-1615529162924-f8605388461d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80'
     ]
   },
   {
@@ -210,65 +209,9 @@ const MOCK_PROPERTIES: PropertyProps[] = [
     price: 225,
     rating: 4.92,
     images: [
-      'https://a0.muscache.com/im/pictures/miso/Hosting-29459696/original/e8b0a583-1eb5-475f-86a8-693fba2aad7c.jpeg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-29459696/original/4c661645-cf7d-4b98-8519-223805c82fbc.jpeg',
-      'https://a0.muscache.com/im/pictures/prohost-api/Hosting-32240386/original/fd195576-8282-4457-8f44-7d1c4d7e4a2b.jpeg'
-    ]
-  },
-  {
-    id: 13,
-    title: 'Tropical Beach House',
-    location: 'Kihei, Hawaii',
-    distance: '2,680 miles away',
-    dates: 'Nov 15-20',
-    price: 420,
-    rating: 4.95,
-    images: [
-      'https://a0.muscache.com/im/pictures/e25a9b25-fa98-4160-bfd1-039287bf38b6.jpg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-42566460/original/00d2eebb-bad3-43ba-ad52-3eb88e698a48.jpeg',
-      'https://a0.muscache.com/im/pictures/baab5524-b606-45c0-babf-3a0d81c2d297.jpg'
-    ]
-  },
-  {
-    id: 14,
-    title: 'Historic Brownstone',
-    location: 'Boston, Massachusetts',
-    distance: '2,120 miles away',
-    dates: 'Dec 12-17',
-    price: 285,
-    rating: 4.88,
-    images: [
-      'https://a0.muscache.com/im/pictures/prohost-api/Hosting-32240386/original/fd195576-8282-4457-8f44-7d1c4d7e4a2b.jpeg',
-      'https://a0.muscache.com/im/pictures/prohost-api/Hosting-32240386/original/86c735e6-9aaf-4b37-be56-a5b1d6a4b23a.jpeg',
-      'https://a0.muscache.com/im/pictures/73c220b6-e292-4eb7-9a09-8ed95e018ad5.jpg'
-    ]
-  },
-  {
-    id: 15,
-    title: 'Desert Oasis with Pool',
-    location: 'Scottsdale, Arizona',
-    distance: '820 miles away',
-    dates: 'Nov 5-10',
-    price: 315,
-    rating: 4.97,
-    images: [
-      'https://a0.muscache.com/im/pictures/73c220b6-e292-4eb7-9a09-8ed95e018ad5.jpg',
-      'https://a0.muscache.com/im/pictures/b48cbe2b-fbc8-47a6-a14e-7e5f94f38c8e.jpg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg'
-    ]
-  },
-  {
-    id: 16,
-    title: 'Ski-in/Ski-out Chalet',
-    location: 'Park City, Utah',
-    distance: '730 miles away',
-    dates: 'Jan 15-20',
-    price: 390,
-    rating: 4.92,
-    images: [
-      'https://a0.muscache.com/im/pictures/baab5524-b606-45c0-babf-3a0d81c2d297.jpg',
-      'https://a0.muscache.com/im/pictures/d3d7659f-e66e-4aca-b4db-d0aa68d34713.jpg',
-      'https://a0.muscache.com/im/pictures/miso/Hosting-40792948/original/bd32c473-605c-4ab7-9929-841ac67107cc.jpeg'
+      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80',
+      'https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80',
+      'https://images.unsplash.com/photo-1560185127-6ed189bf02f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80'
     ]
   }
 ];
