@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Heart, Star, Share, Award, Home, MapPin, Users, Bed, Bath, Calendar, ExternalLink } from 'lucide-react';
@@ -98,8 +97,18 @@ const PropertyDetails: React.FC = () => {
     return subtotal + cleaningFee + serviceFee;
   };
 
-  // Fallback image
-  const fallbackImage = "https://a0.muscache.com/im/pictures/miso/Hosting-51809333/original/0da70267-d9da-4efb-9123-2714b651c9af.jpeg";
+  // Fallback image list for property details
+  const fallbackImages = [
+    "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1556020685-ae41abfc9365?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1591825729269-caeb344f6df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1080&q=80"
+  ];
+
+  const photos = property?.images && property.images.length > 0 
+    ? property.images 
+    : fallbackImages;
 
   if (isLoading) {
     return (
@@ -129,10 +138,6 @@ const PropertyDetails: React.FC = () => {
       </div>
     );
   }
-
-  const photos = property.images && property.images.length > 0 
-    ? property.images 
-    : [fallbackImage, fallbackImage, fallbackImage, fallbackImage, fallbackImage];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -194,7 +199,7 @@ const PropertyDetails: React.FC = () => {
                     alt={property.title} 
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = fallbackImage;
+                      (e.target as HTMLImageElement).src = fallbackImages[0];
                     }}
                   />
                 </div>
@@ -208,7 +213,7 @@ const PropertyDetails: React.FC = () => {
                       alt={`${property.title} ${idx + 2}`} 
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = fallbackImage;
+                        (e.target as HTMLImageElement).src = fallbackImages[idx % fallbackImages.length];
                       }}
                     />
                   </div>
@@ -220,15 +225,15 @@ const PropertyDetails: React.FC = () => {
             <div className="block md:hidden mt-2">
               <Carousel className="w-full">
                 <CarouselContent>
-                  {photos.slice(1).map((photo, idx) => (
+                  {photos.map((photo, idx) => (
                     <CarouselItem key={idx}>
                       <div className="aspect-square relative">
                         <img 
                           src={photo} 
-                          alt={`${property.title} ${idx + 2}`} 
+                          alt={`${property.title} ${idx + 1}`} 
                           className="w-full h-full object-cover rounded-xl"
                           onError={(e) => {
-                            (e.target as HTMLImageElement).src = fallbackImage;
+                            (e.target as HTMLImageElement).src = fallbackImages[idx % fallbackImages.length];
                           }}
                         />
                       </div>
